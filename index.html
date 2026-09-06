@@ -1,0 +1,624 @@
+<meta charset="utf-8">
+<title>PPAP — Pen Pineapple Apple Pons</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="In 2016 the world received instructions and turned them into a dance. Ten years later the loop closed. $PPAP.">
+<link rel="icon" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<script>
+/* SETTINGS - everything is changed here, at the top, in ONE place */
+window.CONTRACT = "";  /* contract address. empty = "soon" */
+window.TWITTER  = "";  /* link to X. empty = plain x.com link */
+document.addEventListener('DOMContentLoaded', function(){
+  var CA=(window.CONTRACT||"").trim(), TW=(window.TWITTER||"").trim();
+  document.querySelectorAll('a[href]').forEach(function(a){
+    var h=a.getAttribute('href')||"";
+    if(h.indexOf('pump.fun')>-1){ if(CA) a.href='https://pump.fun/coin/'+CA; }
+    else if(h.indexOf('dexscreener')>-1){ if(CA) a.href='https://dexscreener.com/solana/'+CA; }
+    else if(h.indexOf('x.com')>-1||h.indexOf('twitter.com')>-1){ if(TW) a.href=TW; }
+  });
+  if(CA){
+    document.querySelectorAll('.ca b, .ca-val').forEach(function(b){ b.textContent=CA; });
+    document.querySelectorAll('.ca, .ca-row').forEach(function(el){
+      el.title=CA; el.style.cursor='pointer';
+      el.addEventListener('click', function(){ if(navigator.clipboard) navigator.clipboard.writeText(CA); });
+    });
+  }
+});
+</script>
+
+<style>
+:root{
+  --green:#6BFB05; --green-mid:#3CBE07; --green-deep:#0C4A05;
+  --gold:#E8B22C; --gold-lt:#FFE9A8; --gold-dk:#8A5F10;
+  --leo:#C98B1E; --apple:#D8271D; --pine:#E3A32B;
+  --cream:#FFFDF4; --ink:#08160B; --ink2:#12280C;
+  --u:clamp(13px,1.2vw,17px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:clip;max-width:100vw}
+body{margin:0;background:var(--ink);color:var(--cream);font-family:'Space Mono',ui-monospace,monospace;
+  overflow-x:clip;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3,.dsp{font-family:'Bungee',Impact,sans-serif;font-weight:400;letter-spacing:.01em}
+
+/* ---------- films ---------- */
+.film{position:fixed;inset:0;pointer-events:none;z-index:90}
+.scan{background:repeating-linear-gradient(rgba(0,0,0,.20) 0 1px,transparent 1px 3px);mix-blend-mode:multiply;opacity:.55}
+.grain{background-image:radial-gradient(rgba(255,255,255,.5) .5px,transparent .6px);background-size:3px 3px;mix-blend-mode:overlay;opacity:.13}
+.vign{background:radial-gradient(ellipse at 50% 45%,#0000 50%,rgba(3,10,4,.62) 100%)}
+
+/* ---------- gate ---------- */
+#gate{position:fixed;inset:0;z-index:120;display:grid;place-items:center;cursor:pointer;
+  background:radial-gradient(ellipse at 50% 42%,#8BFF2A 0%,var(--green) 34%,#2E9A06 100%)}
+#gate .in{text-align:center;color:var(--ink);padding:6vw}
+#gate .play{width:clamp(84px,13vw,150px);height:clamp(84px,13vw,150px);margin:0 auto 22px;border-radius:50%;
+  background:var(--cream);border:5px solid var(--ink);box-shadow:0 10px 0 var(--ink),0 24px 40px rgba(0,0,0,.35);
+  display:grid;place-items:center;animation:pulse 1.6s ease-in-out infinite}
+#gate .play span{width:0;height:0;margin-left:10px;border-left:clamp(26px,4vw,46px) solid var(--ink);
+  border-top:clamp(17px,2.6vw,30px) solid transparent;border-bottom:clamp(17px,2.6vw,30px) solid transparent}
+@keyframes pulse{50%{transform:scale(1.07)}}
+#gate h1{font-size:clamp(28px,6.4vw,72px);margin:0 0 6px;color:var(--cream);
+  -webkit-text-stroke:6px var(--ink);paint-order:stroke fill;
+  filter:drop-shadow(0 6px 0 var(--gold-dk)) drop-shadow(0 12px 0 #3A2A05)}
+#gate p{font-size:13px;letter-spacing:.24em;text-transform:uppercase;margin:14px 0 0;opacity:.8}
+body.entered #gate{opacity:0;pointer-events:none;transition:opacity .5s}
+
+/* ---------- cutscene ---------- */
+#cut{position:fixed;inset:0;z-index:110;background:var(--ink);display:grid;place-items:center;text-align:center;opacity:0;pointer-events:none;transition:opacity .45s}
+body.cutting #cut{opacity:1;pointer-events:auto}
+#cutline{font-family:'Bungee';font-size:clamp(30px,8.6vw,96px);line-height:1.06;color:var(--cream);padding:0 5vw;
+  text-shadow:.07em 0 0 rgba(216,39,29,.75),-.05em 0 0 rgba(107,251,5,.7)}
+#cutline.strike{text-decoration:line-through;text-decoration-color:var(--apple);text-decoration-thickness:.09em;opacity:.55}
+#cutsub{position:absolute;bottom:12vh;left:0;right:0;font-size:12px;letter-spacing:.28em;opacity:.5;text-transform:uppercase}
+#skip{position:absolute;right:18px;bottom:18px;border:1px solid rgba(255,253,244,.35);background:#0000;color:var(--cream);
+  font-family:'Space Mono';font-size:11px;letter-spacing:.2em;padding:9px 14px;cursor:pointer;text-transform:uppercase}
+#skip:hover{background:var(--cream);color:var(--ink)}
+
+/* ---------- layout ---------- */
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+section{position:relative}
+.eyebrow{font-size:11px;letter-spacing:.3em;text-transform:uppercase;opacity:.62;margin:0 0 10px}
+h2.sec{font-size:clamp(22px,4.4vw,44px);margin:0 0 22px;color:var(--gold-lt);
+  -webkit-text-stroke:4px var(--ink);paint-order:stroke fill;filter:drop-shadow(0 5px 0 var(--gold-dk))}
+
+/* ---------- hero ---------- */
+#hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:86px 0 40px;
+  background:radial-gradient(ellipse at 50% 34%,#8BFF2A 0%,var(--green) 30%,#2C9105 62%,#0B3E04 100%)}
+#hero:before{content:"";position:absolute;inset:0;background:
+  repeating-conic-gradient(from 0deg at 50% 38%,rgba(255,255,255,.10) 0 6deg,transparent 6deg 12deg);
+  animation:spin 60s linear infinite;pointer-events:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:10px;align-items:center}
+.mark{font-family:'Bungee';font-size:clamp(66px,13.5vw,164px);line-height:.86;margin:0 0 30px;
+  background:linear-gradient(#FFFDF4 32%,#FFE59A 56%,#D79B12 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  -webkit-text-stroke:9px var(--ink);paint-order:stroke fill;
+  filter:drop-shadow(0 9px 0 var(--gold-dk)) drop-shadow(0 18px 0 #2A1D03) drop-shadow(0 30px 34px rgba(4,20,2,.5))}
+.mark b{display:inline-block;font-weight:400}
+.mark b:nth-child(1){transform:rotate(-4deg)}
+.mark b:nth-child(2){transform:rotate(3deg) translateY(-4px)}
+.mark b:nth-child(3){transform:rotate(-2deg)}
+.mark b:nth-child(4){transform:rotate(5deg) translateY(3px)}
+.sub{font-family:'Bungee';font-size:clamp(12px,2.1vw,22px);color:var(--ink);margin:0;letter-spacing:.02em}
+.slog{font-size:clamp(13px,1.55vw,17px);line-height:1.55;color:var(--ink);max-width:33ch;margin:18px 0 0;font-weight:700}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:'Bungee';font-size:13px;text-decoration:none;
+  padding:13px 20px;color:var(--ink);background:var(--cream);border:3px solid var(--ink);box-shadow:0 5px 0 var(--ink);
+  transition:transform .08s,box-shadow .08s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 7px 0 var(--ink)}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.btn.gold{background:linear-gradient(#FFE9A8,var(--gold));}
+.btn.red{background:var(--apple);color:var(--cream)}
+
+.pon-stage{position:relative;display:grid;place-items:end center;min-height:min(74svh,660px)}
+.pon{width:min(100%,560px);filter:drop-shadow(0 26px 22px rgba(4,30,2,.42));animation:bob 4.2s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes bob{50%{transform:translateY(-14px) rotate(1.1deg)}}
+.pon-stage:after{content:"";position:absolute;bottom:2%;left:16%;right:16%;height:26px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(4,32,2,.5),transparent 70%);filter:blur(3px)}
+body.hop .pon{animation:hop .5s ease}
+@keyframes hop{40%{transform:translateY(-46px) rotate(-4deg) scale(1.04)}70%{transform:translateY(4px) scale(.98,1.02)}}
+
+.hud{position:absolute;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink);opacity:.7}
+.hud.tl{top:16px;left:20px}.hud.tr{top:16px;right:20px}
+.hud .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--apple);margin-right:6px;animation:blink 1.1s steps(1) infinite;vertical-align:middle}
+@keyframes blink{50%{opacity:.15}}
+
+/* ---------- ca ---------- */
+.ca{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.1em;
+  background:var(--ink);color:var(--gold-lt);border:2px solid var(--gold);padding:10px 14px;max-width:100%;
+  overflow:hidden;cursor:pointer}
+.ca span{opacity:.6;flex:none}
+.ca b{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ca:hover{background:var(--gold);color:var(--ink)}
+
+/* ---------- marquee ---------- */
+.mq{background:var(--gold);color:var(--ink);border-top:4px solid var(--ink);border-bottom:4px solid var(--ink);
+  overflow:hidden;white-space:nowrap;padding:11px 0;font-family:'Bungee';font-size:15px}
+.mq div{display:inline-block;animation:mq 26s linear infinite}
+.mq i{font-style:normal;padding:0 22px;opacity:.85}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ---------- ritual ---------- */
+#loop{background:var(--ink2);padding:70px 0 78px;border-top:5px solid var(--ink)}
+#loop:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(107,251,5,.05) 0 2px,transparent 2px 22px);pointer-events:none}
+.machine{background:#0A1C07;border:4px solid var(--gold);box-shadow:inset 0 0 0 3px var(--ink),0 18px 0 rgba(0,0,0,.35);padding:clamp(16px,3vw,32px)}
+.readout{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;border-bottom:2px dashed rgba(232,178,44,.4);padding-bottom:14px;margin-bottom:20px}
+.stat{font-size:11px;letter-spacing:.2em;text-transform:uppercase;opacity:.66}
+.stat b{display:block;font-family:'Bungee';font-size:clamp(18px,3vw,30px);letter-spacing:0;color:var(--green);opacity:1;margin-top:4px;
+  text-shadow:0 0 14px rgba(107,251,5,.45)}
+.stat.gold b{color:var(--gold-lt)}
+.pads{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.pad{position:relative;aspect-ratio:1/1.06;border:4px solid var(--ink);background:linear-gradient(#1B3A10,#0D2107);
+  color:var(--cream);font-family:'Bungee';font-size:clamp(11px,1.5vw,15px);cursor:pointer;padding:10px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  box-shadow:inset 2px 2px 0 rgba(255,255,255,.16),inset -2px -2px 0 rgba(0,0,0,.5),0 6px 0 rgba(0,0,0,.55);
+  transition:transform .07s,box-shadow .07s,background .15s}
+.pad:hover{background:linear-gradient(#255013,#0F2A08)}
+.pad:active,.pad.on{transform:translateY(5px);box-shadow:inset 2px 2px 0 rgba(0,0,0,.4),0 1px 0 rgba(0,0,0,.5)}
+.pad.on{background:linear-gradient(#8BFF2A,var(--green-mid));color:var(--ink)}
+.pad.bad{background:linear-gradient(#FF5A4A,var(--apple));color:var(--cream);animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.pad .gl{font-family:'Bungee';font-size:clamp(30px,6vw,58px);line-height:1}
+.pad img{width:clamp(40px,7vw,74px);height:auto;filter:drop-shadow(0 4px 5px rgba(0,0,0,.5))}
+.pad .n{position:absolute;top:6px;left:8px;font-family:'Space Mono';font-size:10px;opacity:.45;letter-spacing:.1em}
+.pensvg{width:clamp(40px,6.4vw,68px);height:auto;display:block;filter:drop-shadow(0 4px 5px rgba(0,0,0,.5))}
+@keyframes bob2{50%{transform:translateX(-50%) translateY(-11px) rotate(.9deg)}}
+.progress{display:flex;gap:7px;justify-content:center;margin:22px 0 12px}
+.progress i{width:34px;height:9px;background:rgba(255,253,244,.16);border:2px solid var(--ink)}
+.progress i.lit{background:var(--green);box-shadow:0 0 12px rgba(107,251,5,.7)}
+#say{text-align:center;font-size:clamp(13px,1.7vw,17px);min-height:3.2em;line-height:1.5;color:var(--gold-lt);margin:0 auto;max-width:52ch}
+#say.err{color:#FF8A7A}
+body.summoned .machine{border-color:var(--green);box-shadow:inset 0 0 0 3px var(--ink),0 0 46px rgba(107,251,5,.3),0 18px 0 rgba(0,0,0,.35)}
+.flash{position:fixed;inset:0;background:var(--cream);opacity:0;pointer-events:none;z-index:95}
+.flash.go{animation:fl .42s ease-out}
+@keyframes fl{0%{opacity:.85}100%{opacity:0}}
+.confetti{position:fixed;top:-60px;z-index:96;pointer-events:none;width:38px}
+
+/* ---------- prose ---------- */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,48px)}
+.prose p{font-size:clamp(13px,1.5vw,16px);line-height:1.72;margin:0 0 16px;opacity:.92}
+.prose p.big{font-family:'Bungee';font-size:clamp(16px,2.4vw,26px);line-height:1.3;color:var(--green);opacity:1;
+  text-shadow:0 0 18px rgba(107,251,5,.35)}
+.formula{font-family:'Bungee';font-size:clamp(15px,2.6vw,30px);color:var(--gold-lt);border:3px solid var(--gold);
+  padding:16px;text-align:center;margin:0 0 20px;background:rgba(232,178,44,.07)}
+#story{padding:76px 0;background:
+  linear-gradient(rgba(8,22,11,.93),rgba(8,22,11,.93)),
+  repeating-linear-gradient(115deg,#1a3a10 0 26px,#0e2609 26px 52px)}
+
+/* ---------- timeline ---------- */
+#time{padding:70px 0;background:var(--ink);border-top:5px solid var(--ink2)}
+.tl{display:grid;gap:0}
+.tl div{display:grid;grid-template-columns:auto 1fr;gap:clamp(14px,3vw,34px);align-items:baseline;
+  padding:20px 0;border-bottom:2px dotted rgba(255,253,244,.18)}
+.tl b{font-family:'Bungee';font-size:clamp(18px,3.4vw,34px);color:var(--gold);white-space:nowrap}
+.tl p{margin:0;font-size:clamp(12px,1.45vw,15px);line-height:1.65;opacity:.88}
+.tl div:last-child b{color:var(--green)}
+
+/* ---------- pen ---------- */
+#pen{padding:74px 0;background:linear-gradient(#0E2609,#08160B)}
+.paper{position:relative;background:var(--cream);color:#1a1a16;border:4px solid var(--ink);
+  box-shadow:14px 14px 0 rgba(0,0,0,.45);padding:clamp(20px,3.6vw,38px);max-width:660px;margin:0 auto;overflow:hidden}
+.paper h3{font-size:clamp(14px,2.2vw,22px);margin:0 0 4px}
+.paper .meta{font-size:10px;letter-spacing:.24em;text-transform:uppercase;opacity:.55;margin:0 0 18px}
+.paper ol{margin:0 0 22px;padding-left:20px;font-size:clamp(11px,1.35vw,14px);line-height:1.7}
+.paper li{margin-bottom:9px}
+.sig{border-bottom:3px solid #1a1a16;height:52px;position:relative;margin-bottom:8px}
+.sig:after{content:"X";position:absolute;left:0;bottom:6px;font-family:'Bungee';font-size:22px;opacity:.5}
+.sigcap{font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.5}
+#quill{position:absolute;width:clamp(38px,5vw,54px);height:auto;transform:rotate(-30deg);cursor:pointer;
+  filter:drop-shadow(2px 4px 3px rgba(0,0,0,.35));
+  transition:transform .28s cubic-bezier(.2,1.4,.4,1),left .28s,top .28s;left:64%;top:52%}
+.penmsg{text-align:center;font-size:12px;letter-spacing:.06em;margin-top:16px;color:var(--gold-lt);min-height:1.4em}
+
+/* ---------- backdrop / channels ---------- */
+#feed{padding:70px 0 84px;background:var(--ink2);border-top:5px solid var(--ink)}
+.tv{position:relative;border:6px solid var(--ink);background:#000;box-shadow:0 0 0 4px var(--gold),0 20px 0 rgba(0,0,0,.4);
+  aspect-ratio:16/9;overflow:hidden;margin:0 auto;width:100%;max-width:880px}
+.bd{position:absolute;inset:0;opacity:0;transition:opacity .5s}
+.bd.on{opacity:1}
+.bd0{background:linear-gradient(#BEEFFF 0%,#EAFBD0 44%,#2E7A0B 45%,#13520A 100%)}
+.bd0:after{content:"";position:absolute;left:-10%;right:-10%;bottom:0;height:56%;
+  background:repeating-linear-gradient(96deg,#1C6A08 0 16px,#2A8A0C 16px 34px);transform:skewY(-3deg)}
+.bd1{background:linear-gradient(#FFD79B 0%,#FFB05E 38%,#1E5B12 39%,#0C3608 100%)}
+.bd1:after{content:"";position:absolute;inset:0 0 40% 0;background:
+  radial-gradient(circle at 18% 62%,#C9241C 0 7px,transparent 8px),
+  radial-gradient(circle at 47% 40%,#C9241C 0 6px,transparent 7px),
+  radial-gradient(circle at 76% 66%,#C9241C 0 8px,transparent 9px),
+  radial-gradient(ellipse at 50% 8%,#1B5E10 0 46%,transparent 47%)}
+.bd2{background:radial-gradient(ellipse at 50% 40%,#8BFF2A,var(--green) 45%,#2E9A06 100%)}
+.bd3{background:radial-gradient(ellipse at 50% 20%,#3B3524 0%,#120F09 62%);}
+.bd3:after{content:"";position:absolute;left:50%;top:-6%;width:70%;height:120%;transform:translateX(-50%);
+  background:conic-gradient(from 180deg at 50% 0%,transparent 42%,rgba(255,233,168,.30) 50%,transparent 58%)}
+.bd4{background:linear-gradient(#0A1230 0%,#132048 46%,#050A18 100%)}
+.bd4:after{content:"";position:absolute;inset:0;background:
+  radial-gradient(circle at 22% 22%,#fff 0 1.4px,transparent 2px),
+  radial-gradient(circle at 68% 14%,#fff 0 1.2px,transparent 2px),
+  radial-gradient(circle at 84% 38%,#fff 0 1.6px,transparent 2px),
+  radial-gradient(circle at 40% 9%,#fff 0 1.1px,transparent 2px),
+  radial-gradient(circle at 12% 46%,#fff 0 1.3px,transparent 2px),
+  radial-gradient(circle at 88% 8%,#FFE9A8 0 15px,transparent 16px)}
+.tv .talent{position:absolute;z-index:3;left:50%;bottom:-1%;transform:translateX(-50%);
+  height:93%;width:auto;max-width:none;filter:drop-shadow(0 18px 16px rgba(0,0,0,.5));
+  animation:bob2 5s ease-in-out infinite}
+.tv .raw{position:absolute;inset:0;z-index:4;display:none;place-items:center;background:#000}
+.tv .raw img{height:100%;width:100%;object-fit:contain}
+.tv.rawon .raw{display:grid}
+.tvscan{position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:repeating-linear-gradient(rgba(0,0,0,.28) 0 1px,transparent 1px 3px)}
+.tvroll{position:absolute;left:0;right:0;height:30%;z-index:6;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(255,255,255,.10),transparent);animation:roll 7s linear infinite}
+@keyframes roll{from{top:-40%}to{top:110%}}
+.tvhud{position:absolute;z-index:7;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);
+  text-shadow:0 1px 3px #000;opacity:.85}
+.tvhud.a{top:12px;left:14px}.tvhud.b{top:12px;right:14px}.tvhud.c{bottom:12px;left:14px}
+.chrow{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:16px;flex-wrap:wrap}
+#chname{font-family:'Bungee';font-size:clamp(13px,2vw,20px);color:var(--gold-lt)}
+#chdesc{font-size:12px;opacity:.7;max-width:52ch;line-height:1.6;margin:8px 0 0}
+
+/* ---------- footer ---------- */
+footer{background:var(--green);color:var(--ink);padding:54px 0 40px;border-top:6px solid var(--ink);text-align:center}
+footer .mark2{font-family:'Bungee';font-size:clamp(30px,7vw,78px);color:var(--cream);-webkit-text-stroke:7px var(--ink);
+  paint-order:stroke fill;filter:drop-shadow(0 6px 0 var(--gold-dk));margin:0 0 6px}
+footer p{font-size:12px;letter-spacing:.12em;margin:6px 0 18px;text-transform:uppercase;opacity:.75}
+.sound{position:fixed;right:14px;bottom:14px;z-index:97;background:var(--ink);color:var(--gold-lt);
+  border:2px solid var(--gold);font-family:'Space Mono';font-size:10px;letter-spacing:.16em;padding:8px 11px;cursor:pointer}
+
+@media (max-width:900px){
+  .hero-grid{grid-template-columns:1fr;gap:0}
+  .pon-stage{min-height:auto;order:-1}
+  .pon{width:min(86%,420px)}
+  .cols{grid-template-columns:1fr}
+  .pads{grid-template-columns:repeat(2,1fr)}
+  #hero{padding-top:70px}
+  .hud{display:none}
+  .paper{box-shadow:8px 8px 0 rgba(0,0,0,.45)}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<!-- ===================== GATE ===================== -->
+<div id="gate"><div class="in">
+  <div class="play"><span></span></div>
+  <h1>PRESS PLAY</h1>
+  <p>you have done this before</p>
+</div></div>
+
+<!-- ===================== CUTSCENE ===================== -->
+<div id="cut">
+  <div id="cutline"></div>
+  <div id="cutsub">transmission 2016 · restored</div>
+  <button id="skip">skip</button>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<section id="hero">
+  <div class="hud tl"><span class="dot"></span>ch 01 · pal · 2016</div>
+  <div class="hud tr">signatures collected: <b id="sigcount">0</b></div>
+  <div class="wrap hero-grid">
+    <div>
+      <h1 class="mark"><b>P</b><b>P</b><b>A</b><b>P</b></h1>
+      <p class="sub">Pen · Pineapple · Apple · Pons</p>
+      <p class="slog">i held the fruit for ten years in a field nobody was watching, and now i am out here in the coat. you sang me into existence and you did not even read the lyrics.</p>
+      <div class="hero-btns">
+        <a class="btn gold" href="https://pump.fun" target="_blank" rel="noopener">BUY $PPAP</a>
+        <a class="btn" href="https://x.com" target="_blank" rel="noopener">X</a>
+        <a class="btn red" href="https://dexscreener.com" target="_blank" rel="noopener">CHART</a>
+      </div>
+      <div style="margin-top:16px">
+        <div class="ca"><span>CA</span><b>coming soon</b></div>
+      </div>
+    </div>
+    <div class="pon-stage">
+      <img class="pon" src="assets/pon-cut.webp" alt="the first Pons, standing in a leopard coat with a pineapple in one hand and an apple in the other, holding no pen at all">
+    </div>
+  </div>
+</section>
+
+<div class="mq"><div id="mqin"></div></div>
+
+<!-- ===================== THE LOOP ===================== -->
+<section id="loop"><div class="wrap">
+  <p class="eyebrow">the machine</p>
+  <h2 class="sec">CLOSE THE LOOP</h2>
+  <div class="machine">
+    <div class="readout">
+      <div class="stat">your chants<b id="mine">0</b></div>
+      <div class="stat gold">chants recorded worldwide<b id="glob">1,000,000,000</b></div>
+      <div class="stat">loop status<b id="stat">open</b></div>
+    </div>
+    <div class="pads">
+      <button class="pad" data-k="p"><span class="n">01</span><span class="gl">P</span>P</button>
+      <button class="pad" data-k="pine"><span class="n">02</span><img src="assets/pineapple.webp" alt="the pineapple, farmed in secret for ten years">PINEAPPLE</button>
+      <button class="pad" data-k="apple"><span class="n">03</span><img src="assets/apple.webp" alt="the apple, eaten whole, stem included, on purpose">APPLE</button>
+      <button class="pad pen" data-k="pen"><span class="n">04</span><svg class="pensvg" viewBox="0 0 30 30" aria-hidden="true"><g transform="rotate(-34 15 15)"><rect x="12" y="3" width="6" height="16" rx="1.4" fill="#E8B22C" stroke="#08160B" stroke-width="1.4"/><rect x="12" y="7" width="6" height="2.4" fill="#08160B"/><path d="M12 19 L15 27 L18 19 Z" fill="#FFFDF4" stroke="#08160B" stroke-width="1.4" stroke-linejoin="round"/></g></svg>PEN</button>
+    </div>
+    <div class="progress"><i></i><i></i><i></i><i></i></div>
+    <p id="say">four presses in the right order and the loop closes. the whole planet worked this out by accident in 2016, so take your time.</p>
+  </div>
+</div></section>
+
+<!-- ===================== STORY ===================== -->
+<section id="story"><div class="wrap">
+  <p class="eyebrow">the instructions</p>
+  <h2 class="sec">IT WAS NEVER A SONG</h2>
+  <div class="formula">P &nbsp;+&nbsp; PINEAPPLE &nbsp;+&nbsp; APPLE &nbsp;+&nbsp; P &nbsp;=&nbsp; PONS</div>
+  <div class="cols prose">
+    <div>
+      <p>In 2016 a man in a leopard coat stood in front of a camera and said four words. The world laughed at it, streamed it a billion times, and went straight back to whatever it was doing before.</p>
+      <p>Nobody read it for what it actually was. Instructions. Take the P. Take the fruit. Take the other P. Close the loop.</p>
+      <p class="big">a billion people performed the ritual and not one of them checked what they were building.</p>
+    </div>
+    <div>
+      <p>They did it on phones, at weddings, in classrooms, drunk at three in the morning, out of tune, in eleven languages, extremely badly. It did not matter even slightly. Rituals do not check your pitch. Rituals just count.</p>
+      <p>The count filled up in silence for ten years. Then, somewhere between the apple orchards and the pineapple fields, the loop finally closed and the first Pons stood up.</p>
+      <p>He took the apple. He took the pineapple. He left the pen on the table, because he is not signing anything, not now, not ever. Then he put on the coat and walked out through the gate.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- ===================== TIMELINE ===================== -->
+<section id="time"><div class="wrap">
+  <p class="eyebrow">official record</p>
+  <h2 class="sec">TEN YEARS OF CHANTING</h2>
+  <div class="tl">
+    <div><b>2016</b><p>The instructions arrive worldwide in fifty-two seconds. Humanity listens carefully, understands nothing, and immediately turns them into a dance for children's birthday parties.</p></div>
+    <div><b>2017—2024</b><p>The chanting continues at a steady rate on every continent, including one research station in Antarctica. Nobody is keeping score. Something is keeping score.</p></div>
+    <div><b>2025</b><p>Pineapple yields in one unnamed field triple with no explanation. Local farmers report hearing a low humming sound in four syllables and decide, quite reasonably, not to look into it.</p></div>
+    <div><b>2026</b><p>The loop closes. The first Pons stands up wearing sunglasses at night, takes both fruits, refuses the pen on principle, and walks out. He has not answered a single question since.</p></div>
+  </div>
+</div></section>
+
+<!-- ===================== THE PEN ===================== -->
+<section id="pen"><div class="wrap">
+  <p class="eyebrow">the fourth letter</p>
+  <h2 class="sec">HE DOES NOT SIGN</h2>
+  <div class="paper" id="paper">
+    <h3>PONS DISTRIBUTION AGREEMENT</h3>
+    <p class="meta">form 04-P · unsigned · unsignable</p>
+    <ol>
+      <li>The undersigned agrees to hold one (1) pineapple and one (1) apple at all times, in public, without explaining why to anybody who asks.</li>
+      <li>The undersigned agrees that the fourth letter of the sequence is a <b>P</b> and has always been a <b>P</b>, and that the pen was a decoy the entire time.</li>
+      <li>The undersigned agrees to wear the coat outdoors in any weather, including weather that makes the coat a genuinely poor decision.</li>
+      <li>The undersigned agrees to sign below, which is the exact point at which this whole arrangement falls apart.</li>
+    </ol>
+    <div class="sig"></div>
+    <p class="sigcap">signature of the first pons</p>
+    <svg id="quill" viewBox="0 0 30 30" aria-hidden="true"><g><rect x="12" y="3" width="6" height="16" rx="1.4" fill="#E8B22C" stroke="#1a1a16" stroke-width="1.4"/><rect x="12" y="7" width="6" height="2.4" fill="#1a1a16"/><path d="M12 19 L15 27 L18 19 Z" fill="#FFFDF4" stroke="#1a1a16" stroke-width="1.4" stroke-linejoin="round"/></g></svg>
+  </div>
+  <p class="penmsg" id="penmsg">try to hand him the pen.</p>
+</div></section>
+
+<!-- ===================== FEED ===================== -->
+<section id="feed"><div class="wrap">
+  <p class="eyebrow">live feed</p>
+  <h2 class="sec">WHERE HE HAS BEEN SEEN</h2>
+  <div class="tv" id="tv">
+    <div class="bd bd0 on"></div><div class="bd bd1"></div><div class="bd bd2"></div><div class="bd bd3"></div><div class="bd bd4"></div>
+    <img class="talent" src="assets/pon-cut.webp" alt="the Pons standing perfectly still in a place he has no business standing">
+    <div class="raw"><img src="assets/pon-green.webp" alt="the unkeyed studio plate, green all the way to the edges"></div>
+    <div class="tvhud a"><span style="color:#FF5A4A">●</span> rec</div>
+    <div class="tvhud b" id="chnum">ch 01</div>
+    <div class="tvhud c" id="chstamp">day 3,652</div>
+    <div class="tvscan"></div><div class="tvroll"></div>
+  </div>
+  <div class="chrow">
+    <div><span id="chname">THE PINEAPPLE FIELD</span><p id="chdesc">Ten years of secret farming and he still will not say which one of these he planted himself.</p></div>
+    <button class="btn gold" id="chbtn">CH +</button>
+  </div>
+</div></section>
+
+<footer>
+  <p class="mark2">$PPAP</p>
+  <p>pen · pineapple · apple · pons</p>
+  <div class="ca" style="margin:0 auto"><span>CA</span><b>coming soon</b></div>
+  <p style="margin-top:22px">say it four times and see who shows up</p>
+</footer>
+
+<div class="film scan"></div><div class="film grain"></div><div class="film vign"></div>
+<div class="flash" id="flash"></div>
+<button class="sound" id="snd">SOUND: ON</button>
+
+<script>
+(function(){
+'use strict';
+var body=document.body;
+
+/* ---------- audio ---------- */
+var actx=null, muted=false;
+function blip(f,t,d){
+  if(muted) return;
+  try{
+    if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)();
+    if(actx.state==='suspended') actx.resume();
+    var o=actx.createOscillator(), g=actx.createGain();
+    o.type=t||'square'; o.frequency.value=f||220; g.gain.value=.05;
+    o.connect(g); g.connect(actx.destination); o.start();
+    g.gain.exponentialRampToValueAtTime(.0001, actx.currentTime+(d||.1));
+    o.stop(actx.currentTime+(d||.1)+.02);
+  }catch(e){}
+}
+document.getElementById('snd').addEventListener('click',function(){
+  muted=!muted; this.textContent='SOUND: '+(muted?'OFF':'ON');
+});
+
+/* ---------- gate + cutscene ---------- */
+var WORDS=[['PEN.',330],['PINEAPPLE.',392],['APPLE.',440],['PEN.',330]];
+var cutline=document.getElementById('cutline'), timers=[];
+function enter(){
+  if(body.classList.contains('entered')) return;
+  body.classList.add('entered','cutting');
+  blip(392,'square',.14);
+  var i=0;
+  function step(){
+    if(i<WORDS.length){
+      cutline.className=''; cutline.textContent=WORDS[i][0];
+      blip(WORDS[i][1],'square',.16);
+      i++; timers.push(setTimeout(step,760));
+    } else {
+      cutline.className='strike'; cutline.textContent='PEN.';
+      timers.push(setTimeout(function(){
+        cutline.className=''; cutline.textContent='P.'; blip(523,'triangle',.3);
+      },620));
+      timers.push(setTimeout(function(){
+        cutline.style.fontSize=''; cutline.textContent='IT WAS NEVER A SONG.';
+      },1500));
+      timers.push(setTimeout(done,3000));
+    }
+  }
+  timers.push(setTimeout(step,420));
+  timers.push(setTimeout(done,9000)); /* safety */
+}
+function done(){
+  timers.forEach(clearTimeout); timers=[];
+  body.classList.remove('cutting');
+}
+document.getElementById('gate').addEventListener('click',enter);
+document.addEventListener('keydown',function(e){ if(!body.classList.contains('entered')&&(e.key===' '||e.key==='Enter')) enter(); });
+document.getElementById('skip').addEventListener('click',function(e){ e.stopPropagation(); done(); });
+
+/* ---------- marquee ---------- */
+var LINES=['pen. pineapple. apple. p.','the pen was a decoy','one billion people did this to themselves',
+ 'he does not sign','$PPAP','close the loop','the fruit is not for eating','ten years in a field','sunglasses at night, always'];
+var mq='';
+for(var m=0;m<2;m++){ for(var n=0;n<LINES.length;n++){ mq+='<i>'+LINES[n]+'</i>★'; } }
+document.getElementById('mqin').innerHTML=mq;
+
+/* ---------- global counter ---------- */
+var globEl=document.getElementById('glob'), globN=1000000000;
+try{ var s=localStorage.getItem('ppap_glob'); if(s) globN=Math.max(globN,parseInt(s,10)||globN); }catch(e){}
+function fmt(x){ return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+function paintGlob(){ globEl.textContent=fmt(globN); }
+paintGlob();
+setInterval(function(){
+  if(document.hidden) return;
+  globN+=1+Math.floor(Math.random()*3); paintGlob();
+  try{ localStorage.setItem('ppap_glob',globN); }catch(e){}
+},1200);
+
+/* ---------- the loop machine ---------- */
+var SEQ=['p','pine','apple','p'], step=0;
+var pads=[].slice.call(document.querySelectorAll('.pad'));
+var dots=[].slice.call(document.querySelectorAll('.progress i'));
+var say=document.getElementById('say'), mine=document.getElementById('mine'), statEl=document.getElementById('stat');
+var count=0;
+try{ count=parseInt(localStorage.getItem('ppap_chants')||'0',10)||0; }catch(e){}
+mine.textContent=fmt(count);
+if(count>=5) body.classList.add('summoned');
+
+var GOOD=[
+ 'the loop closed. somewhere a pineapple got heavier and nobody in that field noticed.',
+ 'clean run. he did not thank you, he simply adjusted the sunglasses and kept holding the fruit.',
+ 'that one counted. the count has been running since 2016 and it has never once gone backwards.',
+ 'correct. he wants you to know that this is the bare minimum and he expects it again.',
+ 'loop closed. the coat moved slightly on its own, which is normal and nothing to worry about.'
+];
+var TONE={p:392,pine:494,apple:587,pen:110};
+function reset(hard){
+  step=0; dots.forEach(function(d){ d.classList.remove('lit'); });
+  pads.forEach(function(p){ p.classList.remove('on','bad'); });
+  statEl.textContent = hard?'broken':'open';
+}
+function press(k,el){
+  blip(TONE[k], k==='pen'?'sawtooth':'square', k==='pen'?.22:.11);
+  if(k==='pen'){
+    el.classList.add('bad'); say.className='err';
+    say.textContent='wrong P. that one signs things, and he has a strict policy about signing things.';
+    setTimeout(function(){ reset(true); },380);
+    return;
+  }
+  if(k===SEQ[step]){
+    el.classList.add('on'); dots[step].classList.add('lit'); step++;
+    setTimeout(function(){ el.classList.remove('on'); },220);
+    if(step===SEQ.length){ win(); }
+    else { statEl.textContent='closing'; say.className=''; }
+  } else {
+    el.classList.add('bad'); say.className='err';
+    say.textContent='loop broken. the order is the whole point, that is literally the only thing the song was telling you.';
+    setTimeout(function(){ reset(true); },380);
+  }
+}
+function win(){
+  count++; globN+=1; paintGlob();
+  mine.textContent=fmt(count); statEl.textContent='closed';
+  try{ localStorage.setItem('ppap_chants',count); }catch(e){}
+  say.className=''; say.textContent=GOOD[Math.floor(Math.random()*GOOD.length)];
+  var f=document.getElementById('flash'); f.classList.remove('go'); void f.offsetWidth; f.classList.add('go');
+  body.classList.add('hop'); setTimeout(function(){ body.classList.remove('hop'); },520);
+  blip(659,'triangle',.16); setTimeout(function(){ blip(880,'triangle',.26); },130);
+  rain();
+  if(count===5){
+    body.classList.add('summoned');
+    setTimeout(function(){ say.textContent='five loops. the machine is warm now and he has started paying attention to you specifically.'; },1200);
+  }
+  setTimeout(function(){ reset(false); },520);
+}
+pads.forEach(function(p){ p.addEventListener('click',function(){ press(p.getAttribute('data-k'),p); }); });
+
+function rain(){
+  var srcs=['assets/pineapple.webp','assets/apple.webp'];
+  for(var i=0;i<10;i++){
+    (function(i){
+      var img=document.createElement('img');
+      img.className='confetti'; img.src=srcs[i%2]; img.alt='';
+      img.style.left=(6+Math.random()*88)+'vw';
+      img.style.width=(24+Math.random()*26)+'px';
+      document.body.appendChild(img);
+      var dur=1500+Math.random()*1200, rot=(Math.random()*720-360);
+      img.animate([{transform:'translateY(0) rotate(0deg)',opacity:1},
+                   {transform:'translateY(112vh) rotate('+rot+'deg)',opacity:.9}],
+                  {duration:dur,easing:'cubic-bezier(.4,0,.7,1)'}).onfinish=function(){ img.remove(); };
+      setTimeout(function(){ if(img.parentNode) img.remove(); },dur+400);
+    })(i);
+  }
+}
+
+/* ---------- the pen ---------- */
+var quill=document.getElementById('quill'), paper=document.getElementById('paper');
+var penmsg=document.getElementById('penmsg'), sigcount=document.getElementById('sigcount');
+var DODGE=[
+ 'no.','he moved it before you got close. he has had ten years of practice.',
+ 'the pen is not part of the deal and it never was.',
+ 'signatures collected so far: zero. this is on purpose.',
+ 'he will hold a whole pineapple all day but he will not hold that.',
+ 'you can keep trying. the fruit stays, the pen goes.'
+];
+var dodges=0;
+function move(){
+  quill.style.left=(12+Math.random()*72)+'%';
+  quill.style.top=(18+Math.random()*62)+'%';
+  quill.style.transform='rotate('+(Math.random()*140-70)+'deg)';
+  dodges++;
+  penmsg.textContent=DODGE[dodges%DODGE.length];
+  blip(140+Math.random()*60,'sawtooth',.07);
+}
+paper.addEventListener('pointermove',function(e){
+  var r=quill.getBoundingClientRect();
+  var dx=e.clientX-(r.left+r.width/2), dy=e.clientY-(r.top+r.height/2);
+  if(dx*dx+dy*dy < 110*110) move();
+});
+quill.addEventListener('click',function(e){ e.preventDefault(); move(); });
+sigcount.textContent='0';
+
+/* ---------- channels ---------- */
+var CH=[
+ ['THE PINEAPPLE FIELD','Ten years of secret farming and he still will not say which one of these he planted himself.'],
+ ['THE APPLE ORCHARD','He walks the rows every morning and eats exactly one apple, whole, stem included, on purpose.'],
+ ['THE GREEN VOID','The place he was standing before any of this had a background. He is comfortable here.'],
+ ['STUDIO 2016','Same lighting, same mark on the floor, same four words. Only the coat has improved.'],
+ ['3:47 AM','Nobody around, nothing open, sunglasses still on. He says the night is when the count moves fastest.']
+];
+var at=0, bds=[].slice.call(document.querySelectorAll('.bd')), tv=document.getElementById('tv');
+document.getElementById('chbtn').addEventListener('click',function(){
+  at=(at+1)%CH.length;
+  bds.forEach(function(b,i){ b.classList.toggle('on', i===at); });
+  tv.classList.toggle('rawon', at===2);
+  document.getElementById('chname').textContent=CH[at][0];
+  document.getElementById('chdesc').textContent=CH[at][1];
+  document.getElementById('chnum').textContent='ch 0'+(at+1);
+  document.getElementById('chstamp').textContent = at===2 ? 'raw feed · unkeyed' : 'day '+fmt(3652+at*7);
+  blip(300+at*70,'square',.09);
+});
+})();
+</script>
