@@ -103,7 +103,14 @@ h2.sec{font-size:clamp(22px,4.4vw,44px);margin:0 0 22px;color:var(--gold-lt);
 .mark b:nth-child(3){transform:rotate(-2deg)}
 .mark b:nth-child(4){transform:rotate(5deg) translateY(3px)}
 .sub{font-family:'Bungee';font-size:clamp(12px,2.1vw,22px);color:var(--ink);margin:0;letter-spacing:.02em}
-.slog{font-size:clamp(13px,1.55vw,17px);line-height:1.55;color:var(--ink);max-width:33ch;margin:18px 0 0;font-weight:700}
+.slog{font-size:clamp(12.5px,1.45vw,16px);line-height:1.5;color:var(--ink);max-width:46ch;margin:18px 0 0;font-weight:700}
+.slog p{margin:0 0 7px}
+.slog .hit{font-family:'Bungee';font-weight:400;font-size:clamp(14px,1.75vw,20px);line-height:1.2;margin:10px 0 12px;
+  color:var(--cream);-webkit-text-stroke:4px var(--ink);paint-order:stroke fill;
+  filter:drop-shadow(0 3px 0 var(--gold-dk))}
+.slog .eq{font-family:'Bungee';font-weight:400;font-size:clamp(12px,1.5vw,17px);line-height:1.25;margin:0 0 14px;
+  color:var(--ink);display:inline-block;background:var(--gold-lt);border:3px solid var(--ink);
+  box-shadow:0 5px 0 var(--ink);padding:9px 13px}
 .hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
 .btn{display:inline-flex;align-items:center;gap:8px;font-family:'Bungee';font-size:13px;text-decoration:none;
   padding:13px 20px;color:var(--ink);background:var(--cream);border:3px solid var(--ink);box-shadow:0 5px 0 var(--ink);
@@ -301,7 +308,14 @@ footer p{font-size:12px;letter-spacing:.12em;margin:6px 0 18px;text-transform:up
     <div>
       <h1 class="mark"><b>P</b><b>P</b><b>A</b><b>P</b></h1>
       <p class="sub">Pen · Pineapple · Apple · Pons</p>
-      <p class="slog">i held the fruit for ten years in a field nobody was watching, and now i am out here in the coat. you sang me into existence and you did not even read the lyrics.</p>
+      <div class="slog">
+        <p>In 2016, the whole world thought PPAP was just a song.</p>
+        <p class="hit">But it was a recipe.</p>
+        <p class="eq">P + Pineapple + Apple + P = PONS</p>
+        <p>For 10 years, the Pons have been secretly growing.</p>
+        <p>The first Pon has escaped the pineapple farm.</p>
+        <p class="hit">Nobody knows what happens next.</p>
+      </div>
       <div class="hero-btns">
         <a class="btn gold" href="https://pump.fun" target="_blank" rel="noopener">BUY $PPAP</a>
         <a class="btn" href="https://x.com" target="_blank" rel="noopener">X</a>
